@@ -7,7 +7,6 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework_simplejwt.tokens import AccessToken
-
 from api.filters import TitleFilter
 from api.mixins import ListCreateDestroyMixin
 from api.permissions import ContentPermission, IsAdmin, IsAdminOrReadOnly

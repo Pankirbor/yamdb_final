@@ -39,6 +39,6 @@ jobs:
         # запуск проверки проекта по flake8
         python -m flake8
 
-        #cd infra_project/
+        cd infra_project/
 
-        python -m pytest
+        python manage.py test

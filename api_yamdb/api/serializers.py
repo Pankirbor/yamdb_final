@@ -4,7 +4,6 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from rest_framework.relations import SlugRelatedField
-
 from users.models import User
 from reviews.models import Category, Comment, Genre, Title, Review
 
