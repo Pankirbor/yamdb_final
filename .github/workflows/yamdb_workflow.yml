@@ -3,7 +3,8 @@ name: Django-app workflow
 
 on:
   push:
-    branches: [ feature_action ]
+    branches:
+        - feature_action
 
   pull_request:
     branches: [ master ]
