@@ -13,7 +13,7 @@ services:
       - ./.env
 
   web:
-    image: infra_web
+    image: pancirbor/infra_action
     build: ../api_yamdb
     restart: always
     volumes:

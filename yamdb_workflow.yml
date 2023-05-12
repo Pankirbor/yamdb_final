@@ -1,13 +1,12 @@
-# .github/workflows/**yamdb_workflows.yml**
+# .github/workflows/**main.yml**
 name: Django-app workflow
 
 on:
-  push:
-    branches:
-        - feature_action
+ push:
+    branches: [feature_action]
 
-  pull_request:
-    branches: [ master ]
+ pull_request:
+    branches: [master]
 
 jobs:
   tests:
@@ -32,8 +31,6 @@ jobs:
         python -m pip install --upgrade pip
         # установка flake8 и его плагинов
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
-
-        cd api_yamdb
         # установка зависимостей
         pip install -r requirements.txt
 
@@ -42,6 +39,6 @@ jobs:
         # запуск проверки проекта по flake8
         python -m flake8
 
-        #cd infra_project/
+        cd infra_project/
 
-        python -m pytest
+        python manage.py test
