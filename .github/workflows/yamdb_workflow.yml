@@ -50,9 +50,6 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
-    environment:
-        name: venv
-        url: https://github.com
 
     steps:
       - name: Check out the repo
