@@ -4,7 +4,7 @@ RUN apt-get clean && apt-get update
 
 RUN apt-get install -qy nano
 
-WORKDIR /infra_sp2
+WORKDIR /yamdb_final
 
 COPY requirements.txt ./
 
