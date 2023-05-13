@@ -13,13 +13,13 @@ services:
       - ./.env
 
   web:
-    image: pancirbor/infra_action
+    image: pancirbor/api_yamdb
     build: ../api_yamdb
     restart: always
     volumes:
-      - static_value:/infra_sp2/static/
+      - static_value:/yamdb_final/static/
 
-      - media_value:/infra_sp2/media/
+      - media_value:/yamdb_final/media/
 
     depends_on:
       - db
