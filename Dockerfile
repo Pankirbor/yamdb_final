@@ -6,7 +6,7 @@ RUN apt-get install -qy nano
 
 WORKDIR /yamdb_final
 
-COPY requirements.txt ./
+COPY api_yamdb/requirements.txt ./
 
 RUN pip3 install -r requirements.txt --no-cache-dir
 
