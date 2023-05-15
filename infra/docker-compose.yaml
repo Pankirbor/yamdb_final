@@ -13,7 +13,7 @@ services:
       - ./.env
 
   web:
-    image: pancirbor/api_yamdb
+    image: pankirbor/api_yamdb
     build: ../api_yamdb
     restart: always
     volumes:
