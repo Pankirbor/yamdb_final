@@ -71,6 +71,7 @@ jobs:
           context: ./api_yamdb
           push: true
           tags: pankirbor/api_yamdb:latest
+          file: ./api_yamdb/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
