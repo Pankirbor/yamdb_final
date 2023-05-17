@@ -1,12 +1,12 @@
 # .github/workflows/**yamdb_workflows.yml**
 name: Django-app workflow
 
-on:
-  push:
-    branches: [ master ]
+on: [push]
+#   push:
+#     branches: [ master ]
 
-  pull_request:
-    branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
 
 jobs:
   tests:
