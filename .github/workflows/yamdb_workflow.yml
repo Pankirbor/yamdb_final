@@ -1,11 +1,7 @@
-# .github/workflows/**yamdb_workflows.yml**
 name: Django-app workflow
 
 on:
   push:
-    branches: [ master ]
-
-  pull_request:
     branches: [ master ]
 
 jobs:
@@ -68,25 +64,18 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            echo "вход на сервер осуществлен"
             sudo docker-compose stop
-            echo "докер компос остановлен"
             sudo docker-compose rm web
-            echo "контейнер удален"
             sudo docker pull ${{ secrets.DOC_USERNAME }}/api_yamdb:latest
-            echo "образ скачен"
             touch .env
-            echo "вход на сервер осуществлен"
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} > .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            echo "все перемнные окружения записаны в файл"
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             sudo docker-compose up -d
-            sudo docker-compose exec web python manage.py migrate
-            echo "sudo docker-compose exec web python manage.py collectstatic --no-input"
 
   send_message:
     runs-on: ubuntu-latest
