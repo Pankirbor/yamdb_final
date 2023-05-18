@@ -2,7 +2,7 @@
 
 
 
-Проект `Yamdb` с возможностью запуска через контейнер в `Docker`.
+Проект `Yamdb` с возможностью запуска через `Docker-compose`.
 
 
 
@@ -73,25 +73,75 @@ SECRET_KEY = 'SECRET_KEY_из_настроек_проекта'
 
 
 
-## Как развернуть проект с помощью `docker-compose` на локальном сервере:
+## Как развернуть проект на сервере:
 
-- перейдите в директорию `./infra` и выполните следующие команды в терминале:
-
-
+### Склонировать репозиторий:
 
 ```python
 
-# запуск сборки образов и контейнеров
+git clone git@github.com:Pankirbor/yamdb_final.git
 
-sudo docker-compose up
+```
+### Подготовка удаленного сервера для развертывания проекта:
+- Выполнив вход на свой сервер, установите docker:
 
+```python
+sudo apt install docker.io
+```
+- Установите docker-compose:
 
+```python
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+```
+- Локально в проекте отредактируйте файл `infra/nginx/default.conf` изменив `IP-адрес` сервера.
+- Скопируйте файлы `default.conf` и `docker-compose.yaml` насвой сервер, выполнив локально команды:
 
+```python
+# из дириктори infra
+scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
+
+# из директории nginx
+scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+```
+### `Workflow Action`:
+- Создать необходимые секретные данные для доступа к `GitHub`, `DockerHub`, `своему серверу`, а так же наполнения `.env`:
+
+```python
+    DB_ENGINE=<django.db.backends.postgresql>
+    DB_NAME=<имя базы данных postgres>
+    POSTGRES_USER=<пользователь бд>
+    POSTGRES_PASSWORD=<пароль>
+    DB_HOST=<db>
+    DB_PORT=<5432>
+
+    DOC_PASSWORD=<пароль от DockerHub>
+    DOCKER_USERNAME=<имя пользователя>
+
+    SECRET_KEY=<секретный ключ проекта django>
+
+    USER_SERVER=<username для подключения к серверу>
+    SERVER_HOST=<IP сервера>
+    PASSPHRASE=<пароль для сервера, если он установлен>
+    SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
+
+    TELEGRAM_TO=<ID чата, в который придет сообщение>
+    TELEGRAM_TOKEN=<токен вашего бота>
+```
+### Процесс автоматизированой работы `Workflow Action`:
+- После отправки изменеий на `github` (`git push origin master`) срабатывает триггер на запуск:
+    - первым этапом, происходит тестирование проекта;
+    - вторым этапом, происходит сборка образа и загрузка на `DockerHub`;
+    - третий этап осуществляет разворачивание прокта на сервере на основе загруженного образа;
+    - четвертый этап, отправка сообщения в чат телеграм об успешном результате.
+    - **каждый этап выполняется только в случае успешного исполнения предыдущего.**
+
+- Далее на сервере необходимо выполнить команды:
+
+```python
 # запуск миграций
 
 sudo docker-compose exec web python manage.py migrate
-
-
 
 # создание суперюзера для входа в админ-зону
 
@@ -129,11 +179,11 @@ sudo docker-compose exec web python manage.py loaddata fixtures.json
 
 - ссылки на работающий проект:
 
-    - http://yamdbkirill.sytes.net/admin/
+    - [Адимн-зона сайта](http://yamdbkirill.sytes.net/admin/)
 
-    - http://yamdbkirill.sytes.net/api/v1/
+    - [Главная страница API](http://yamdbkirill.sytes.net/api/v1/)
 
-    - http://yamdbkirill.sytes.net/redoc/
+    - [Документация к работе с API](http://yamdbkirill.sytes.net/redoc/)
 
 
 
@@ -143,4 +193,9 @@ sudo docker-compose exec web python manage.py loaddata fixtures.json
 
 
 
-![master](https://github.com/pankirbor/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master)
+[![master](https://github.com/pankirbor/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master)](https://github.com/Pankirbor/yamdb_final/actions)
+[![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
+[![Nginx](https://img.shields.io/badge/-NGINX-464646?style=flat-square&logo=NGINX)](https://nginx.org/ru/)
+[![gunicorn](https://img.shields.io/badge/-gunicorn-464646?style=flat-square&logo=gunicorn)](https://gunicorn.org/)
+[![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
+[![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
